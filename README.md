@@ -1,13 +1,13 @@
-= DISCLAIMER =
+# DISCLAIMER
 
 This is a fork of  [opencollab/giws](https://github.com/opencollab/giws) repo. (After commit [97a5e4a
 ](https://github.com/opencollab/giws/commit/97a5e4aab23cb29171062d8a69f3374ef2e72d9c)) I am very stupid 
 for python, my only change is to make it run with Python 3. I hope it will be helpful for some of you.
 
-						GIWS 
-						****
+GIWS 
+====
 
-=== Description ===
+### Description 
 
 GIWS is basically the opposite of SWIG.
 
@@ -18,7 +18,7 @@ from C/C++.
 GIWS is widely used in Scilab (from version 5.0) to drive the rendering and 
 the GUI.
 
-=== Documentation ===
+### Documentation
 
 The best way to understand how to use GIWS is to read the examples
 
@@ -29,7 +29,8 @@ XML declaration files:
 examples/*/*.xml
 
 
-=== Usage ===
+### Usage
+
 ./giws -h to see the help
 
 Options :
@@ -60,8 +61,8 @@ Displays the help
 
 	
 
-=== Dependencies ===
+### Dependencies 
 
 Obviously, as GIWS has been written in Python, it needs the Python interpretor
 to work. And that's it !
-
+ 
