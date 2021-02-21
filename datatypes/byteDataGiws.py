@@ -34,7 +34,7 @@
 # 
 # For more information, see the file COPYING
 
-from dataGiws import dataGiws
+from datatypes.dataGiws import dataGiws
 
 class byteDataGiws(dataGiws):
 
@@ -53,5 +53,5 @@ class byteDataGiws(dataGiws):
 		return "signed 8 bits"
 	
 if __name__ == '__main__':
-	print byteDataGiws().getReturnTypeSyntax()
+	print (byteDataGiws().getReturnTypeSyntax())
 

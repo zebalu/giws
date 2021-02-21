@@ -277,7 +277,7 @@ class CXXException:
 		""" % (self.getCXXHeader(config), strHeader, strCommonEnd)
 		fileName=config.getExceptionFileName()+config.getCPPHeaderExtension()
 		outputWriter().writeIntoFile(config.getOutput(),fileName, str)
-		print "%s generated ..."%fileName
+		print ("%s generated ..."%fileName)
 
 	# Build the whole code of the C++ Exception Body
 	def generateCXXBody(self,config):
@@ -619,4 +619,4 @@ class CXXException:
 
 		fileName=config.getExceptionFileName()+config.getCPPBodyExtension()
 		outputWriter().writeIntoFile(config.getOutput(),fileName, str)
-		print "%s generated ..."%fileName
+		print ("%s generated ..."%fileName)

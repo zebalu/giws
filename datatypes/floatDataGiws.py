@@ -34,7 +34,7 @@
 # 
 # For more information, see the file COPYING
 
-from dataGiws import dataGiws
+from datatypes.dataGiws import dataGiws
 
 class floatDataGiws(dataGiws):
 
@@ -53,5 +53,5 @@ class floatDataGiws(dataGiws):
 		return "unsigned 8 bits"
 
 if __name__ == '__main__':
-	print floatDataGiws().getReturnTypeSyntax()
+	print (floatDataGiws().getReturnTypeSyntax())
 

@@ -34,7 +34,7 @@
 # 
 # For more information, see the file COPYING
 
-from dataGiws import dataGiws
+from datatypes.dataGiws import dataGiws
 
 class charDataGiws(dataGiws):
 
@@ -53,5 +53,4 @@ class charDataGiws(dataGiws):
 		return "unsigned 16 bits"
 	
 if __name__ == '__main__':
-	print charDataGiws().getReturnTypeSyntax()
-
+	print (charDataGiws().getReturnTypeSyntax())

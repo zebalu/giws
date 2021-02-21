@@ -36,6 +36,7 @@
 
 from distutils.core import setup
 from configGiws import configGiws
+import py2exe
 import os
 
 root_dir = os.path.dirname(__file__)
@@ -49,7 +50,15 @@ setup (name = "giws",
     author_email="sylvestre@debian.org",
     url="https://github.com/opencollab/giws/",
     packages=['.','classRepresentation','datatypes'],
-    scripts=['giws'],
+    scripts=['giws.py'],
+    console=['giws.py'],
+    options={
+      "py2exe": {
+         "unbuffered": True,
+         "optimize": 2,
+         "excludes": ["email"]
+      }
+    },
     license="CeCILL",
     long_description="""Giws is basically doing the same stuff as SWIG but the opposite.
  Calling Java from C/C++ can be tricky: JNI calls are complicated

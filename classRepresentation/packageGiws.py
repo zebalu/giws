@@ -34,7 +34,7 @@
 # 
 # For more information, see the file COPYING
 
-from objectGiws import objectGiws
+from classRepresentation.objectGiws import objectGiws
 
 class packageGiws:
 	__name=""

@@ -151,7 +151,7 @@ class JNIFrameWork:
 		}
 		}"""
 
-        # For static methods, we can not call getCurrentEnv() because it is not static
+	# For static methods, we can not call getCurrentEnv() because it is not static
 	def getStaticProfile(self):
 		static = """
 		JNIEnv * curEnv = NULL;
@@ -183,12 +183,12 @@ class JNIFrameWork:
 		if configGiws().getThrowsException():
 			str="""if (curEnv->ExceptionCheck()) {
 			"""
-                        if methodReturn != "":
-                                str+="""delete[] %s;
+			if methodReturn != "":
+				str+="""delete[] %s;
                                 """%(methodReturn)
-                        str+= """%sthrow %s::JniCallMethodException(curEnv);
+				str+= """%sthrow %s::JniCallMethodException(curEnv);
 			}"""%(detachThread,configGiws().getExceptionFileName())
-                        return str
+				return str
 		else:
 			return """if (curEnv->ExceptionCheck()) {
 			curEnv->ExceptionDescribe() ;
@@ -205,16 +205,19 @@ class JNIFrameWork:
 
 		methodIdName=method.getUniqueNameOfTheMethod()
 
+		getMethod = ""
+		firstParam = ""
+
 		signatureReturn=method.getReturn().getTypeSignature()
 		if method.getReturn().isArray() and not method.getReturn().isByteBufferBased(): # Returns an array ...
 			signatureReturn="["* method.getReturn().getDimensionArray() + signatureReturn
 
-                if method.getModifier()=="static":
-                        getMethod = "GetStaticMethodID"
-                        firstParam = "cls"
-                else:
-                        getMethod = "GetMethodID"
-                        firstParam = "this->instanceClass"
+		if method.getModifier()=="static":
+				getMethod = "GetStaticMethodID"
+				firstParam = "cls"
+		else:
+				getMethod = "GetMethodID"
+				firstParam = "this->instanceClass"
 		if method.getModifier()=="static":
 			methodCall="static jmethodID"
 		else:
@@ -265,12 +268,12 @@ class JNIFrameWork:
 			returns="""%s res =  static_cast<%s>("""%(typeOfReturn, typeOfReturn)
 			returnsEnd=")"
 
-                if method.getModifier()=="static":
-                        return """
+			if method.getModifier()=="static":
+				return """
                         %s curEnv->%s(cls, %s %s)%s;
                         """ % (returns, returnType.getCallStaticMethod(), method.getUniqueNameOfTheMethod(), params, returnsEnd)
-                else:
-                        return """
+			else:
+				return """
                         %s curEnv->%s( this->instance, %s %s)%s;
                         """ % (returns, returnType.getCallMethod(), method.getUniqueNameOfTheMethod(), params, returnsEnd)
 
@@ -279,8 +282,8 @@ class JNIFrameWork:
 		return returnType.getReturnSyntax()
 
 
-        def getDLLExportSyntax(self):
-                return """
+	def getDLLExportSyntax(self):
+		return """
 		#ifndef GIWSEXPORT
 		# if defined(_MSC_VER) || defined(__WIN32__) || defined(__CYGWIN__)
 		#   if defined(STATIC_LINKED)

@@ -34,7 +34,7 @@
 #
 # For more information, see the file COPYING
 
-from dataGiws import dataGiws
+from datatypes.dataGiws import dataGiws
 from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
@@ -70,12 +70,12 @@ class dataBufferGiws(dataGiws):
 			errorMgntMemBis = self.__errorMemoryByteBuffer(detachThread)
 
 
-		str = """
+		str = ("""
 
-            jobject buffer%s = curEnv->NewDirectByteBuffer((void*)%s, (jlong)%sSize * sizeof(%s));
+			jobject buffer%s = curEnv->NewDirectByteBuffer((void*)%s, (jlong)%sSize * sizeof(%s));
 if (!buffer%s)
 {
-    throw GiwsException::JniBadAllocException(curEnv);
+	throw GiwsException::JniBadAllocException(curEnv);
 }
 
 if (ByteOrderClass == NULL) {
@@ -115,11 +115,11 @@ curEnv->ExceptionDescribe();
 }
 buffer%s = curEnv->CallObjectMethod(buffer%s, orderID, nativeOrder);
 
-"""%(name, name, name, self.nativeType, name, name, name, name)
-                if self.getJavaBufferType() == "ByteBuffer":
-                        str=str+""" jobject %s_ = buffer%s; """ % (name, name)
-                        return str
-		str=str+"""
+"""%(name, name, name, self.nativeType, name, name, name, name))
+		if self.getJavaBufferType() == "ByteBuffer":
+						str=str+""" jobject %s_ = buffer%s; """ % (name, name)
+						return str
+		str=(str+"""
 if (asdbID%s == NULL) {
  asdbID%s = curEnv->GetMethodID(bbCls, "as%s", "()%s");
 if (asdbID%s == NULL) {
@@ -134,7 +134,7 @@ if (%s_ == NULL)
 // check that allocation succeed
 throw GiwsException::JniBadAllocException(curEnv);
 }
-"""%(self.getJavaBufferType(), self.getJavaBufferType(), self.getJavaBufferType(), self.getTypeSignature(), self.getJavaBufferType(), name, name, self.getJavaBufferType(), name)
+"""%(self.getJavaBufferType(), self.getJavaBufferType(), self.getJavaBufferType(), self.getTypeSignature(), self.getJavaBufferType(), name, name, self.getJavaBufferType(), name))
 		return str
 	
 	def specificPostProcessing(self, detachThread):
@@ -159,21 +159,21 @@ throw GiwsException::JniBadAllocException(curEnv);
 			self.temporaryVariableName="byteBufferRes"
 			if self.getDimensionArray() == 1:
 				str+=strCommon+"""
-        *lenRow = curEnv->GetDirectBufferCapacity(res);
-        %s %s = static_cast<%s>(curEnv->GetDirectBufferAddress(res));
+		*lenRow = curEnv->GetDirectBufferCapacity(res);
+		%s %s = static_cast<%s>(curEnv->GetDirectBufferAddress(res));
 
-        curEnv->DeleteLocalRef(res);
-        curEnv->DeleteLocalRef(cls);
-        if (curEnv->ExceptionCheck()) {
-            curEnv->ExceptionDescribe() ;
-        }
+		curEnv->DeleteLocalRef(res);
+		curEnv->DeleteLocalRef(cls);
+		if (curEnv->ExceptionCheck()) {
+			curEnv->ExceptionDescribe() ;
+		}
 				"""%(self.getNativeType(), self.temporaryVariableName, self.getNativeType())
 				return str
 			else:
 				if configGiws().getDisableReturnSize()==True:
 					str+="int lenCol;"
 				str+=strCommon+"""
-                TODO voir si on delete ca
+				TODO voir si on delete ca
 				char ***arrayOfByteBuffer;
 				arrayOfByteBuffer = new char **[%slenRow];
 				for (jsize i = 0; i < %slenRow; i++){ /* Line of the array */

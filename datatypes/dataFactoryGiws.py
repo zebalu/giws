@@ -51,14 +51,13 @@ from datatypes.CharBufferDataGiws import CharBufferDataGiws
 from datatypes.FloatBufferDataGiws import FloatBufferDataGiws
 from datatypes.IntBufferDataGiws import IntBufferDataGiws
 from datatypes.ShortBufferDataGiws import ShortBufferDataGiws
-import datatypes
-import new
+
 
 """ Factory which create the different data types """
 class dataFactoryGiws:
-	  def __init__(self):
+	def __init__(self):
 
-		  self.dict = {
+		self.dict = {
 			  "int":     intDataGiws,
 			  "char":    charDataGiws,
 			  "long":    longDataGiws,
@@ -72,14 +71,13 @@ class dataFactoryGiws:
 			  "DoubleBuffer": DoubleBufferDataGiws,
 			  "ByteBuffer": ByteBufferDataGiws,
 			  "CharBuffer": CharBufferDataGiws,
-			  "DoubleBuffer": DoubleBufferDataGiws,
 			  "FloatBuffer": FloatBufferDataGiws,
 			  "IntBuffer": IntBufferDataGiws,
 			  "LongBuffer": LongBufferDataGiws,
 			  "ShortBuffer": ShortBufferDataGiws
 			  }
 
-	  def create(self, dataTypeToCreate):
+	def create(self, dataTypeToCreate):
 			""" Create an GIWS datatype
 			it can be int, char, long, double, boolean, byte, float, short,
 			String and void
@@ -90,21 +88,21 @@ class dataFactoryGiws:
 			isArray=False
 			arrayDimension=0 # Scalar
 			if dataTypeToCreate.endswith("[]"): # It is an array
-				  isArray=True
-				  arrayDimension=dataTypeToCreate.count("[]")
-				  # Trim to load the right object
-				  dataTypeToCreate=dataTypeToCreate[0:len(dataTypeToCreate)-(arrayDimension*2)]
+				isArray=True
+				arrayDimension=dataTypeToCreate.count("[]")
+				# Trim to load the right object
+				dataTypeToCreate=dataTypeToCreate[0:len(dataTypeToCreate)-(arrayDimension*2)]
 
 
 			if dataTypeToCreate not in self.dict:
-				  raise Exception("Don't know how to manage the data type %s",dataTypeToCreate)
+				raise Exception("Don't know how to manage the data type %s",dataTypeToCreate)
 
 			myType=self.dict[dataTypeToCreate]()
 
 			if myType.isByteBufferBased():
-				  arrayDimension=1
-				  # It is a byte buffer type
-				  isArray=True
+				arrayDimension=1
+				# It is a byte buffer type
+				isArray=True
 
 			myType.setIsArray(isArray)
 			myType.setDimensionArray(arrayDimension)
@@ -114,6 +112,6 @@ if __name__ == '__main__':
 	myFactory=dataFactoryGiws()
 	myData=myFactory.create("int")
 	myData=myFactory.create("IntBuffer")
-        print myFactory.isByteBufferBased()
+	print (myFactory.isByteBufferBased())
 	myData2=myFactory.create("doesnt-exist")
-	print myData.getDescription()
+	print (myData.getDescription())

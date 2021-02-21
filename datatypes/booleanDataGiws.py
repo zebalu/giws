@@ -34,7 +34,7 @@
 #
 # For more information, see the file COPYING
 
-from dataGiws import dataGiws
+from datatypes.dataGiws import dataGiws
 from JNIFrameWork import JNIFrameWork
 from configGiws import configGiws
 
@@ -138,4 +138,4 @@ class booleanDataGiws(dataGiws):
 			return (res == JNI_TRUE);
 			"""
 if __name__ == '__main__':
-	print booleanDataGiws().getReturnTypeSyntax()
+	print (booleanDataGiws().getReturnTypeSyntax())

@@ -34,7 +34,7 @@
 #
 # For more information, see the file COPYING
 
-import sys, pprint
+import sys
 import os.path
 
 import xml.etree.ElementTree as ET
@@ -43,7 +43,6 @@ from classRepresentation.packageGiws import packageGiws
 from classRepresentation.objectGiws import objectGiws
 from classRepresentation.methodGiws import methodGiws
 from classRepresentation.parameterGiws import parameterGiws
-from classRepresentation.returnDataGiws import returnDataGiws
 from datatypes.dataFactoryGiws import dataFactoryGiws
 
 class parseXMLEngine:
@@ -128,7 +127,7 @@ class parseXMLEngine:
 					print ('%s is already defined as parameters'%param.getName())
 					sys.exit(-3)
 			except ValueError: #Cannot find the parameter => not defined. Good!
-   				parametersName.append(param.getName())
+					parametersName.append(param.getName())
 
 			Jmethod.addParameter(param)
 		return Jmethod
@@ -141,7 +140,7 @@ class parseXMLEngine:
 
 
 if __name__ == '__main__':
-	print "Parsing ..."
+	print ("Parsing ...")
 	templateObj=parseXMLEngine("template.xml")
-	print templateObj.getJpackage().generateCXXHeader()
-	print templateObj.getJpackage()
+	print (templateObj.getJpackage().generateCXXHeader())
+	print (templateObj.getJpackage())

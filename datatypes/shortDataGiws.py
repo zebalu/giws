@@ -34,7 +34,7 @@
 # 
 # For more information, see the file COPYING
 
-from dataGiws import dataGiws
+from datatypes.dataGiws import dataGiws
 
 class shortDataGiws(dataGiws):
 
@@ -53,5 +53,5 @@ class shortDataGiws(dataGiws):
 		return "signed 16 bits"
 
 if __name__ == '__main__':
-	print shortDataGiws().getReturnTypeSyntax()
+	print (shortDataGiws().getReturnTypeSyntax())
 

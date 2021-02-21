@@ -34,7 +34,7 @@
 # 
 # For more information, see the file COPYING
 
-from dataGiws import dataGiws
+from datatypes.dataGiws import dataGiws
 
 class intDataGiws(dataGiws):
 	"""
@@ -53,7 +53,5 @@ class intDataGiws(dataGiws):
 		
 	def getDescription(self):
 		return "signed 32 bits"
-			
-if __name__ == '__main__':
-	print intDataGiws().getReturnTypeSyntax()
+
 

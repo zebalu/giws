@@ -34,7 +34,7 @@
 #
 # For more information, see the file COPYING
 
-from methodGiws import methodGiws
+from classRepresentation.methodGiws import methodGiws
 from JNIFrameWork import JNIFrameWork
 from datatypes.stringDataGiws import stringDataGiws
 from configGiws import configGiws
@@ -46,11 +46,7 @@ class objectGiws:
 	# Which class it extends
 	__extends=None
 
-	def __init__(self, name):
-		self.__name=name
-		self.__methods=[]
-
-	def __init__(self, name, extends):
+	def __init__(self, name, extends=None):
 		self.__name=name
 		self.__methods=[]
 		self.__extends=extends
@@ -182,7 +178,7 @@ class objectGiws:
 		/* localInstance not needed anymore */
 		curEnv->DeleteLocalRef(localInstance);
 
-                /* Methods ID set to NULL */
+				/* Methods ID set to NULL */
 		%s
 
 		}
@@ -215,24 +211,24 @@ class objectGiws:
 			constructorProfile+=""" : %s(fakeGiwsDataType::fakeGiwsDataType()) """ % (self.getExtendedClass().getName())
 		return """
 		%s {
-        jvm=jvm_;
+		jvm=jvm_;
 
-        JNIEnv * curEnv = getCurrentEnv();
+		JNIEnv * curEnv = getCurrentEnv();
 
 		jclass localClass = curEnv->GetObjectClass(JObj);
-        this->instanceClass = static_cast<jclass>(curEnv->NewGlobalRef(localClass));
-        curEnv->DeleteLocalRef(localClass);
+		this->instanceClass = static_cast<jclass>(curEnv->NewGlobalRef(localClass));
+		curEnv->DeleteLocalRef(localClass);
 
-        if (this->instanceClass == NULL) {
+		if (this->instanceClass == NULL) {
 		%s
-        }
+		}
 
-        this->instance = curEnv->NewGlobalRef(JObj) ;
-        if(this->instance == NULL){
+		this->instance = curEnv->NewGlobalRef(JObj) ;
+		if(this->instance == NULL){
 		%s
-        }
-        /* Methods ID set to NULL */
-        %s
+		}
+		/* Methods ID set to NULL */
+		%s
 
 }
 		"""%(constructorProfile, errorMgntRef, errorMgntNewRef, strMethodID)
@@ -248,13 +244,13 @@ class objectGiws:
 		return str
 
 	def __getConstructorProfileWhichInstanciateTheNewObject(self):
-	  str="""%s(%s * %s_)"""% (self.getName(), JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable())
+		str="""%s(%s * %s_)"""% (self.getName(), JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable())
 #	  if self.__extends!=None:
 #		  str+=""": %s(fakeGiwsDataType::fakeGiwsDataType())"""%(self.__extends)
-	  return str
+		return str
 
-  	def __getConstructorProfileWhichUsesAnAlreadyExistingJObject(self):
-	  return """%s(%s * %s_, jobject JObj)"""% (self.getName(), JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable())
+	def __getConstructorProfileWhichUsesAnAlreadyExistingJObject(self):
+		return """%s(%s * %s_, jobject JObj)"""% (self.getName(), JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable())
 
 	def getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(self):
 		return """%s;"""%self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject()
@@ -317,8 +313,8 @@ class objectGiws:
 			i=i+1
 		return str
 
-        def generateCXXHeader(self, packageName):
-                JNIObjectName=packageName+"/"+self.getName()
+	def generateCXXHeader(self, packageName):
+		JNIObjectName=packageName+"/"+self.getName()
 
 		if self.getExtendedClass()==None:
 			classProfile="""class GIWSEXPORT %s {""" % (self.getName())
@@ -381,25 +377,25 @@ class objectGiws:
 			// Methods
 			%s
 
-                        /**
-                        * Get class name to use for static methods
-                        * @return class name to use for static methods
-                        */
-                        %s
+						/**
+						* Get class name to use for static methods
+						* @return class name to use for static methods
+						*/
+						%s
 
-                        /**
-                        * Get class to use for static methods
-                        * @return class to use for static methods
-                        */
-                        %s
+						/**
+						* Get class to use for static methods
+						* @return class to use for static methods
+						*/
+						%s
 			};
 
 			""" % (classProfile, JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getProtectedFields(), self.getCacheBuffer(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(),self.__getFakeConstructorForExtendedClasses(), self.getName(), self.getMethodsCXX(), self.getClassNameProfile(JNIObjectName), self.getInitClassProfile())
 
 	def generateCXXBody(self):
 		return """
-                // Static declarations (if any)
-                %s
+				// Static declarations (if any)
+				%s
 		// Returns the current env
 		%s
 		// Destructor
@@ -413,79 +409,79 @@ class objectGiws:
 		%s
 			""" % (self.getStaticVariableDeclaration(), JNIFrameWork().getMethodGetCurrentEnv(self.getName()), JNIFrameWork().getObjectDestuctor(self.getName(),stringClassSet=self.__stringClassSet), self.getConstructorBodyCXX(), JNIFrameWork().getSynchronizeMethod(self.getName()) , JNIFrameWork().getEndSynchronizeMethod(self.getName()), self.getMethodsCXX("body"))
 
-        def getClassNameProfile(self, JNIObjectName):
-                return """
-                static const std::string className()
-                {
-                return "%s";
-                }
-                """ % (JNIObjectName)
+	def getClassNameProfile(self, JNIObjectName):
+				return """
+				static const std::string className()
+				{
+				return "%s";
+				}
+				""" % (JNIObjectName)
 
-        def getInitClassProfile(self):
-                return """
-                static jclass initClass(JNIEnv * curEnv)
-                {
-                    static jclass cls = 0;
+	def getInitClassProfile(self):
+				return """
+				static jclass initClass(JNIEnv * curEnv)
+				{
+					static jclass cls = 0;
 
-                    if (cls == 0)
-                    {
-                        jclass _cls = curEnv->FindClass(className().c_str());
-                        if (_cls)
-                        {
-                            cls = static_cast<jclass>(curEnv->NewGlobalRef(_cls));
-                        }
-                    }
+					if (cls == 0)
+					{
+						jclass _cls = curEnv->FindClass(className().c_str());
+						if (_cls)
+						{
+							cls = static_cast<jclass>(curEnv->NewGlobalRef(_cls));
+						}
+					}
 
-                    return cls;
-                 }
-                """
+					return cls;
+				 }
+				"""
 
-        def needCaching(self):
+	def needCaching(self):
 
-                for method in self.__methods:
-                        for param in  method.getParameters():
-                                if param.getType().isByteBufferBased() == True:
-                                        return True
+				for method in self.__methods:
+					for param in  method.getParameters():
+						if param.getType().isByteBufferBased() == True:
+							return True
 
-                return False
+				return False
 
 
-        def getStaticVariableDeclaration(self):
+	def getStaticVariableDeclaration(self):
 
-                str=""
-                if self.needCaching():
-                        str="""
-                // Cache of the bytebuffer stuff
-                jclass %s::ByteOrderClass = NULL;
-                jmethodID %s::nativeOrderID = NULL;
-                jobject %s::nativeOrder = NULL;
-                jmethodID %s::orderID = NULL;
-                jclass %s::bbCls = NULL;
-                jmethodID %s::asdbIDByteBuffer = NULL;
-                jmethodID %s::asdbIDCharBuffer = NULL;
-                jmethodID %s::asdbIDDoubleBuffer = NULL;
-                jmethodID %s::asdbIDFloatBuffer = NULL;
-                jmethodID %s::asdbIDIntBuffer = NULL;
-                jmethodID %s::asdbIDLongBuffer = NULL;
-                jmethodID %s::asdbIDShortBuffer = NULL;""" %  ( self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName() )
-                return str
+				str=""
+				if self.needCaching():
+						str="""
+				// Cache of the bytebuffer stuff
+				jclass %s::ByteOrderClass = NULL;
+				jmethodID %s::nativeOrderID = NULL;
+				jobject %s::nativeOrder = NULL;
+				jmethodID %s::orderID = NULL;
+				jclass %s::bbCls = NULL;
+				jmethodID %s::asdbIDByteBuffer = NULL;
+				jmethodID %s::asdbIDCharBuffer = NULL;
+				jmethodID %s::asdbIDDoubleBuffer = NULL;
+				jmethodID %s::asdbIDFloatBuffer = NULL;
+				jmethodID %s::asdbIDIntBuffer = NULL;
+				jmethodID %s::asdbIDLongBuffer = NULL;
+				jmethodID %s::asdbIDShortBuffer = NULL;""" %  ( self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName() )
+				return str
 
-        def getCacheBuffer(self):
-                str=""
-                if self.needCaching():
-                        str="""
-                // Cache of the bytebuffer stuff
-                static jclass ByteOrderClass;
-                static jmethodID nativeOrderID;
-                static jobject nativeOrder;
-                static jmethodID orderID;
-                static jclass bbCls;
-                static jmethodID asdbIDByteBuffer;
-                static jmethodID asdbIDCharBuffer;
-                static jmethodID asdbIDDoubleBuffer;
-                static jmethodID asdbIDFloatBuffer;
-                static jmethodID asdbIDIntBuffer;
-                static jmethodID asdbIDLongBuffer;
-                static jmethodID asdbIDShortBuffer;
-                """
-                return str
+	def getCacheBuffer(self):
+				str=""
+				if self.needCaching():
+						str="""
+				// Cache of the bytebuffer stuff
+				static jclass ByteOrderClass;
+				static jmethodID nativeOrderID;
+				static jobject nativeOrder;
+				static jmethodID orderID;
+				static jclass bbCls;
+				static jmethodID asdbIDByteBuffer;
+				static jmethodID asdbIDCharBuffer;
+				static jmethodID asdbIDDoubleBuffer;
+				static jmethodID asdbIDFloatBuffer;
+				static jmethodID asdbIDIntBuffer;
+				static jmethodID asdbIDLongBuffer;
+				static jmethodID asdbIDShortBuffer;
+				"""
+				return str

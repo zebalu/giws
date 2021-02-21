@@ -34,7 +34,7 @@
 #
 # For more information, see the file COPYING
 
-from dataGiws import dataGiws
+from datatypes.dataGiws import dataGiws
 
 class voidDataGiws(dataGiws):
 
@@ -55,8 +55,8 @@ class voidDataGiws(dataGiws):
 	def getDescription(self):
 		return "void type"
 
- 	def getReturnSyntax(self):
+	def getReturnSyntax(self):
 		return ""
 
 if __name__ == '__main__':
-	print voidDataGiws().getReturnTypeSyntax()
+	print (voidDataGiws().getReturnTypeSyntax())

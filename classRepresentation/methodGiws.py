@@ -34,7 +34,7 @@
 #
 # For more information, see the file COPYING
 
-from parameterGiws import parameterGiws
+from classRepresentation.parameterGiws import parameterGiws
 from JNIFrameWork import JNIFrameWork
 from datatypes.dataGiws import dataGiws
 from datatypes.stringDataGiws import stringDataGiws

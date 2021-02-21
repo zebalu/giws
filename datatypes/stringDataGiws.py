@@ -34,7 +34,7 @@
 #
 # For more information, see the file COPYING
 
-from dataGiws import dataGiws
+from datatypes.dataGiws import dataGiws
 from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
@@ -74,14 +74,14 @@ class stringDataGiws(dataGiws):
 				pointer = "*"
 			return "char" + pointer
 
-        def __errorMemoryString(self, detachThread):
+	def __errorMemoryString(self, detachThread):
 		# Management of the error when not enought memory to create the string
 		if configGiws().getThrowsException():
 			errorMgntMemBis="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
 		else:
 			errorMgntMemBis="""std::cerr << "Could not convert C string to Java UTF string, memory full." << std::endl;%s
 			exit(EXIT_FAILURE);"""%(detachThread)
-                return errorMgntMemBis
+		return errorMgntMemBis
 
 	def specificPreProcessing(self, parameter, detachThread):
 		""" Overrides the preprocessing of the array """
@@ -93,7 +93,7 @@ class stringDataGiws(dataGiws):
 			errorMgntMem="""std::cerr << "Could not allocate Java string array, memory full." << std::endl;%s
 			exit(EXIT_FAILURE);"""%(detachThread)
 
-                errorMgntMemBis = self.__errorMemoryString(detachThread)
+			errorMgntMemBis = self.__errorMemoryString(detachThread)
 
 		if self.isArray():
 			if self.getDimensionArray() == 1:
@@ -154,7 +154,7 @@ class stringDataGiws(dataGiws):
 		else:
 			# Need to store is for the post processing (delete)
 			self.parameterName=name
-                        tempName=name+"_"
+			tempName=name+"_"
 			return """
 			jstring %s = curEnv->NewStringUTF( %s );
 			if (%s != NULL && %s == NULL)
@@ -175,7 +175,7 @@ class stringDataGiws(dataGiws):
 
 		str=JNIFrameWork().getExceptionCheckProfile(detachThread)
 
-                str=str+"if (res != NULL) { "
+		str=str+"if (res != NULL) { "
 
 		if self.isArray():
 			strCommon=""
@@ -188,7 +188,7 @@ class stringDataGiws(dataGiws):
 			strCommon+="""
 			%s lenRow = curEnv->GetArrayLength(res);
 			"""%(strDeclaration)
-                        self.temporaryVariableName="arrayOfString"
+			self.temporaryVariableName="arrayOfString"
 			if self.getDimensionArray() == 1:
 				str+=strCommon+"""
 				char **arrayOfString;
@@ -240,11 +240,11 @@ class stringDataGiws(dataGiws):
 			curEnv->DeleteLocalRef(res);
 			"""%(self.temporaryVariableName, self.temporaryVariableName)
 
-                        return str
+			return str
 
 
 	def getReturnSyntax(self):
-                str=""
+		str=""
 		if self.isArray():
 			str = str + """
 			curEnv->DeleteLocalRef(res);
@@ -254,8 +254,8 @@ class stringDataGiws(dataGiws):
 			str = str + """
 			return %s;
 			"""%(self.temporaryVariableName)
-                str = str + """ } else {
+			str = str + """ } else {
 				curEnv->DeleteLocalRef(res);
 				return NULL;
 				}"""
-                return str
+		return str
