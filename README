@@ -1,3 +1,9 @@
+= DISCLAIMER =
+
+This is a fork of  [opencollab/giws](https://github.com/opencollab/giws) repo. (After commit [97a5e4a
+](https://github.com/opencollab/giws/commit/97a5e4aab23cb29171062d8a69f3374ef2e72d9c)) I am very stupid 
+for python, my only change is to make it run with Python 3. I hope it will be helpful for some of you.
+
 						GIWS 
 						****
 
